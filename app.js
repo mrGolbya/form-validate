@@ -1,7 +1,6 @@
 const usernameEl = document.querySelector("#username");
 const emailEl = document.querySelector("#email");
 const telEl = document.querySelector("#usertel");
-const numberEl = document.querySelector("#number");
 const checkBoxEl = document.querySelector("#checkbox");
 
 const checkUsername = () => {
