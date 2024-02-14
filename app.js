@@ -1,68 +1,13 @@
-const usernameEl = document.querySelector("#username");
-const emailEl = document.querySelector("#email");
-const telEl = document.querySelector("#usertel");
-const checkBoxEl = document.querySelector("#checkbox");
-
-const checkUsername = () => {
-  let valid = false;
-
-  const min = 3,
-    max = 25;
-
-  const username = usernameEl.value.trim();
-
-  if (!isRequired(username)) {
-    showError(usernameEl, "Имя не может быть пустым.");
-  } else if (!isBetween(username.length, min, max)) {
-    showError(
-      usernameEl,
-      `Имя пользователя должно содержать от ${min} до ${max} символов.`
-    );
-  } else {
-    showSuccess(usernameEl);
-    valid = true;
+window.addEventListener("input", debounce(function (e) {
+  if (e.target.id== "usertel") {
+      checkTel();
   }
-  return valid;
-};
+})
+);
 
-const checkEmail = () => {
-  let valid = false;
-  const email = emailEl.value.trim();
-  if (!isRequired(email)) {
-    showError(emailEl, "Email не может быть пустым.");
-  } else if (!isEmailValid(email)) {
-    showError(emailEl, "Email не является допустимым.");
-  } else {
-    showSuccess(emailEl);
-    valid = true;
-  }
-  return valid;
-};
+// let telWrapper = e.target.closest(".form-field");
+let telEl = document.querySelector("[data-phone-pattern]");
 
-const checkNumber = () => {
-  let valid = false;
-  const number = numberEl.value.trim();
-  if (!isRequired(number)) {
-    showError(numberEl, "Значение не может быть пустым.");
-  } else {
-    showSuccess(numberEl);
-    valid = true;
-  }
-  return valid;
-};
-
-const checkBox = () => {
-  let valid = false;
-  const checkbox = checkBoxEl.checked;
-  if (!checkbox) {
-    showError(checkBoxEl, "Чтобы продолжить, дайте согласие.");
-  } else {
-    showSuccess(checkBoxEl);
-    valid = true;
-  }
-  return valid;
-};
-//
 const checkTel = () => {
   let valid = false;
   const tel = telEl.value.trim().replace(/\D/g, "");
@@ -102,28 +47,7 @@ for (let elem of phone_inputs) {
     elem.addEventListener(ev, eventCalllback);
   }
 }
-//
-usernameEl.addEventListener("keydown", getOnlyLetters);
 
-function getOnlyLetters(e) {
-  if (e.key.match(/[0-9]/)) {
-    return e.preventDefault();
-  }
-}
-
-usernameEl.addEventListener("input", () => {
-  usernameEl.value = usernameEl.value.replace(/[0-9]/g, "");
-});
-
-const isEmailValid = (email) => {
-  const re =
-    /^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
-};
-
-const isTelValid = (tel) => {
-  return /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g.test(tel);
-};
 
 const isRequired = (value) => (value === "" ? false : true);
 const isBetween = (length, min, max) =>
@@ -154,36 +78,7 @@ const showSuccess = (input) => {
   error.textContent = "";
 };
 
-form.addEventListener("submit", function (e) {
-  // prevent the form from submitting
-  e.preventDefault();
 
-  // validate forms
-  let isUsernameValid = checkUsername(),
-    isEmailValid = checkEmail(),
-    isTelValid = checkTel(),
-    isNumberValid = checkNumber(),
-    isCheckBoxValid = checkBox();
-
-  let isFormValid =
-    isUsernameValid &&
-    isEmailValid &&
-    isTelValid &&
-    isNumberValid &&
-    isCheckBoxValid;
-
-  // submit to the server if the form is valid
-  if (isFormValid) {
-    form.classList.add("_sending");
-    if (!document.querySelector(".spinner")) {
-      form.insertAdjacentHTML(
-        "beforebegin",
-        '<div class="spinner"><div class="spinner-icon"></div></div>'
-      );
-    }
-    formSendServer();
-  }
-});
 
 async function formSendServer() {
   let response = await fetch("sendmail.php", {
@@ -212,25 +107,4 @@ const debounce = (fn, delay = 500) => {
   };
 };
 //
-form.addEventListener(
-  "input",
-  debounce(function (e) {
-    switch (e.target.id) {
-      case "username":
-        checkUsername();
-        break;
-      case "email":
-        checkEmail();
-        break;
-      case "usertel":
-        checkTel();
-        break;
-      case "number":
-        checkNumber();
-        break;
-      case "checkbox":
-        checkBox();
-        break;
-    }
-  })
-);
+

@@ -48,7 +48,6 @@ body {
 .business-data {
   display: flex;
   flex-direction: column;
-  width: calc(100% / 2);
 }
 
 .form._sending::after {
