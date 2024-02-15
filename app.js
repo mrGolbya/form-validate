@@ -15,15 +15,15 @@ const checkUsername = (e) => {
   let usernameEl = formField.querySelector("[data-user-name]");
   let username = usernameEl.value.trim();
 
-  // usernameEl.addEventListener("keydown", getOnlyLetters);
+  usernameEl.addEventListener("keydown", getOnlyLetters);
 
-  // function getOnlyLetters(e) {
-  //   if (e.key.match(/[0-9]/)) {
-  //      e.preventDefault();
+  function getOnlyLetters(e) {
+    if (e.key.match(/[0-9]/)) {
+       e.preventDefault();
 
-  //   }
+    }
 
-  // }
+  }
 
   // usernameEl.addEventListener("input", () => {
   //   usernameEl.value = usernameEl.value.replace(/[0-9]/g, "");
