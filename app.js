@@ -104,7 +104,7 @@ const checkTel = (e) => {
   if (!isRequired(tel)) {
     showError(telEl, "Телефон не может быть пустым.");
   } else if (tel.length < 11) {
-    showError(telEl, (tel.length < 10) ? `Введите ещё ${11-tel.length} цифр` : `Введите ещё ${11-tel.length} цифру`);
+    showError(telEl,   `Введите ещё ${11-tel.length} ${(7>tel.length > 0 ? 'цифр' : tel.length < 10  ? 'цифры' : 'цифру')}`);
   } else {
     showSuccess(telEl);
     valid = true;
@@ -180,7 +180,7 @@ const showSuccess = (input) => {
 window.addEventListener("submit", function (e) {
   // prevent the form from submitting
   e.preventDefault();
-
+  console.log(a)
   // validate forms
   let isUsernameValid = checkUsername(),
     isEmailValid = checkEmail(),
