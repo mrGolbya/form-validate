@@ -1,37 +1,109 @@
-//delay schow message
-const debounce = (fn, delay = 500) => {
-  let timeoutId;
-  return (...args) => {
-    // cancel the previous timer
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    // setup a new timer
-    timeoutId = setTimeout(() => {
-      fn.apply(null, args);
-    }, delay);
-  };
+// const emailEl = document.querySelector("#email");
+// const telEl = document.querySelector("#usertel");
+// const numberEl = document.querySelector("#number");
+// const checkBoxEl = document.querySelector("#checkbox");
+
+let formField;
+
+const checkUsername = (e) => {
+  let valid = false;
+
+  const min = 3,
+    max = 25;
+
+  formField = e.target.closest(".form-field");
+  let usernameEl = formField.querySelector("[data-user-name]");
+  let username = usernameEl.value.trim();
+
+  // usernameEl.addEventListener("keydown", getOnlyLetters);
+
+  // function getOnlyLetters(e) {
+  //   if (e.key.match(/[0-9]/)) {
+  //      e.preventDefault();
+
+  //   }
+
+  // }
+
+  // usernameEl.addEventListener("input", () => {
+  //   usernameEl.value = usernameEl.value.replace(/[0-9]/g, "");
+  // });
+
+  if (!isRequired(username)) {
+    showError(usernameEl, "Имя не может быть пустым.");
+  } else if (!isBetween(username.length, min, max)) {
+    showError(
+      usernameEl,
+      `Имя пользователя должно содержать от ${min} до ${max} символов.`
+    );
+  } else {
+    showSuccess(usernameEl);
+    valid = true;
+  }
+  return valid;
+};
+
+const checkEmail = (e) => {
+  let valid = false;
+
+  formField = e.target.closest(".form-field");
+  let emailEl = formField.querySelector("[data-user-email]");
+
+  let email = emailEl.value.trim();
+
+  if (!isRequired(email)) {
+    showError(emailEl, "Email не может быть пустым.");
+  } else if (!isEmailValid(email)) {
+    showError(emailEl, "Email не является допустимым.");
+  } else {
+    showSuccess(emailEl);
+    valid = true;
+  }
+  return valid;
+};
+
+const checkNumber = (e) => {
+  let valid = false;
+
+  formField = e.target.closest(".form-field");
+  let numberEl = formField.querySelector("[data-user-number]");
+
+  let number = numberEl.value.trim();
+  if (!isRequired(number)) {
+    showError(numberEl, "Значение не может быть пустым.");
+  } else {
+    showSuccess(numberEl);
+    valid = true;
+  }
+  return valid;
+};
+
+const checkBox = (e) => {
+  let valid = false;
+
+  formField = e.target.closest(".form-field");
+  let checkBoxEl = formField.querySelector("[data-user-checkbox]");
+  const checkbox = checkBoxEl.checked;
+  if (!checkbox) {
+    showError(checkBoxEl, "Чтобы продолжить, дайте согласие.");
+  } else {
+    showSuccess(checkBoxEl);
+    valid = true;
+  }
+  return valid;
 };
 //
-
-window.addEventListener("input", debounce(function (e) {
-  if (e.target.id == "usertel") {
-    checkTel(e)
-  }
-})
-);
-
-//logics error/success massege
 const checkTel = (e) => {
-  let formTel = e.target.closest(".form-field");
-  let telEl = formTel.querySelector("[data-phone-pattern]");
   let valid = false;
-  const tel = telEl.value.trim().replace(/\D/g, "");
+
+  formField = e.target.closest(".form-field");
+  let telEl = formField.querySelector("[data-phone-pattern]");
+
+  let tel = telEl.value.trim().replace(/\D/g, "");
 
   if (!isRequired(tel)) {
     showError(telEl, "Телефон не может быть пустым.");
   } else if (tel.length < 11) {
-    
     showError(telEl, (tel.length < 10) ? `Введите ещё ${11-tel.length} цифр` : `Введите ещё ${11-tel.length} цифру`);
   } else {
     showSuccess(telEl);
@@ -64,7 +136,17 @@ for (let elem of phone_inputs) {
     elem.addEventListener(ev, eventCalllback);
   }
 }
+//
 
+const isEmailValid = (email) => {
+  const re =
+    /^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+};
+
+const isTelValid = (tel) => {
+  return /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g.test(tel);
+};
 
 const isRequired = (value) => (value === "" ? false : true);
 const isBetween = (length, min, max) =>
@@ -95,7 +177,36 @@ const showSuccess = (input) => {
   error.textContent = "";
 };
 
+window.addEventListener("submit", function (e) {
+  // prevent the form from submitting
+  e.preventDefault();
 
+  // validate forms
+  let isUsernameValid = checkUsername(),
+    isEmailValid = checkEmail(),
+    isTelValid = checkTel(),
+    isNumberValid = checkNumber(),
+    isCheckBoxValid = checkBox();
+
+  let isFormValid =
+    isUsernameValid &&
+    isEmailValid &&
+    isTelValid &&
+    isNumberValid &&
+    isCheckBoxValid;
+
+  // submit to the server if the form is valid
+  if (isFormValid) {
+    form.classList.add("_sending");
+    if (!document.querySelector(".spinner")) {
+      form.insertAdjacentHTML(
+        "beforebegin",
+        '<div class="spinner"><div class="spinner-icon"></div></div>'
+      );
+    }
+    formSendServer();
+  }
+});
 
 async function formSendServer() {
   let response = await fetch("sendmail.php", {
@@ -110,3 +221,38 @@ async function formSendServer() {
     alert("ошибка");
   }
 }
+const debounce = (fn, delay = 0) => {
+  let timeoutId;
+  return (...args) => {
+    // cancel the previous timer
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    // setup a new timer
+    timeoutId = setTimeout(() => {
+      fn.apply(null, args);
+    }, delay);
+  };
+};
+//
+window.addEventListener(
+  "input",
+  debounce(function (e) {
+    if (e.target.id == "username") {
+      checkUsername(e);
+    }
+      if (e.target.id == "email") {
+        checkEmail(e);
+      }
+      if (e.target.id == "usertel") {
+        checkTel(e);
+      }
+      if (e.target.id == "number") {
+        checkNumber(e);
+      }
+      if (e.target.id == "checkbox") {
+        checkBox(e);
+      }
+    
+  })
+);
