@@ -1,16 +1,33 @@
-const usernameEl = document.querySelector("#username");
-const emailEl = document.querySelector("#email");
-const telEl = document.querySelector("#usertel");
-const numberEl = document.querySelector("#number");
-const checkBoxEl = document.querySelector("#checkbox");
+// const emailEl = document.querySelector("#email");
+// const telEl = document.querySelector("#usertel");
+// const numberEl = document.querySelector("#number");
+// const checkBoxEl = document.querySelector("#checkbox");
 
-const checkUsername = () => {
+let formField;
+
+const checkUsername = (e) => {
   let valid = false;
 
   const min = 3,
     max = 25;
 
-  const username = usernameEl.value.trim();
+  formField = e.target.closest(".form-field");
+  let usernameEl = formField.querySelector("[data-user-name]");
+  let username = usernameEl.value.trim();
+
+  // usernameEl.addEventListener("keydown", getOnlyLetters);
+
+  // function getOnlyLetters(e) {
+  //   if (e.key.match(/[0-9]/)) {
+  //      e.preventDefault();
+
+  //   }
+
+  // }
+
+  // usernameEl.addEventListener("input", () => {
+  //   usernameEl.value = usernameEl.value.replace(/[0-9]/g, "");
+  // });
 
   if (!isRequired(username)) {
     showError(usernameEl, "Имя не может быть пустым.");
@@ -26,9 +43,14 @@ const checkUsername = () => {
   return valid;
 };
 
-const checkEmail = () => {
+const checkEmail = (e) => {
   let valid = false;
-  const email = emailEl.value.trim();
+
+  formField = e.target.closest(".form-field");
+  let emailEl = formField.querySelector("[data-user-email]");
+
+  let email = emailEl.value.trim();
+
   if (!isRequired(email)) {
     showError(emailEl, "Email не может быть пустым.");
   } else if (!isEmailValid(email)) {
@@ -40,9 +62,13 @@ const checkEmail = () => {
   return valid;
 };
 
-const checkNumber = () => {
+const checkNumber = (e) => {
   let valid = false;
-  const number = numberEl.value.trim();
+
+  formField = e.target.closest(".form-field");
+  let numberEl = formField.querySelector("[data-user-number]");
+
+  let number = numberEl.value.trim();
   if (!isRequired(number)) {
     showError(numberEl, "Значение не может быть пустым.");
   } else {
@@ -52,8 +78,11 @@ const checkNumber = () => {
   return valid;
 };
 
-const checkBox = () => {
+const checkBox = (e) => {
   let valid = false;
+
+  formField = e.target.closest(".form-field");
+  let checkBoxEl = formField.querySelector("[data-user-checkbox]");
   const checkbox = checkBoxEl.checked;
   if (!checkbox) {
     showError(checkBoxEl, "Чтобы продолжить, дайте согласие.");
@@ -64,9 +93,13 @@ const checkBox = () => {
   return valid;
 };
 //
-const checkTel = () => {
+const checkTel = (e) => {
   let valid = false;
-  const tel = telEl.value.trim().replace(/\D/g, "");
+
+  formField = e.target.closest(".form-field");
+  let telEl = formField.querySelector("[data-phone-pattern]");
+
+  let tel = telEl.value.trim().replace(/\D/g, "");
 
   if (!isRequired(tel)) {
     showError(telEl, "Телефон не может быть пустым.");
@@ -104,17 +137,6 @@ for (let elem of phone_inputs) {
   }
 }
 //
-usernameEl.addEventListener("keydown", getOnlyLetters);
-
-function getOnlyLetters(e) {
-  if (e.key.match(/[0-9]/)) {
-    return e.preventDefault();
-  }
-}
-
-usernameEl.addEventListener("input", () => {
-  usernameEl.value = usernameEl.value.replace(/[0-9]/g, "");
-});
 
 const isEmailValid = (email) => {
   const re =
@@ -155,7 +177,7 @@ const showSuccess = (input) => {
   error.textContent = "";
 };
 
-form.addEventListener("submit", function (e) {
+window.addEventListener("submit", function (e) {
   // prevent the form from submitting
   e.preventDefault();
 
@@ -199,7 +221,7 @@ async function formSendServer() {
     alert("ошибка");
   }
 }
-const debounce = (fn, delay = 500) => {
+const debounce = (fn, delay = 0) => {
   let timeoutId;
   return (...args) => {
     // cancel the previous timer
@@ -213,25 +235,24 @@ const debounce = (fn, delay = 500) => {
   };
 };
 //
-form.addEventListener(
+window.addEventListener(
   "input",
   debounce(function (e) {
-    switch (e.target.id) {
-      case "username":
-        checkUsername();
-        break;
-      case "email":
-        checkEmail();
-        break;
-      case "usertel":
-        checkTel();
-        break;
-      case "number":
-        checkNumber();
-        break;
-      case "checkbox":
-        checkBox();
-        break;
+    if (e.target.id == "username") {
+      checkUsername(e);
     }
+      if (e.target.id == "email") {
+        checkEmail(e);
+      }
+      if (e.target.id == "usertel") {
+        checkTel(e);
+      }
+      if (e.target.id == "number") {
+        checkNumber(e);
+      }
+      if (e.target.id == "checkbox") {
+        checkBox(e);
+      }
+    
   })
 );
