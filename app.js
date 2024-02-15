@@ -1,3 +1,4 @@
+//delay schow message
 const debounce = (fn, delay = 500) => {
   let timeoutId;
   return (...args) => {
@@ -20,20 +21,18 @@ window.addEventListener("input", debounce(function (e) {
 })
 );
 
-// let telWrapper = e.target.closest(".form-field");
-
-
+//logics error/success massege
 const checkTel = (e) => {
   let formTel = e.target.closest(".form-field");
   let telEl = formTel.querySelector("[data-phone-pattern]");
-  console.log(telEl)
   let valid = false;
   const tel = telEl.value.trim().replace(/\D/g, "");
 
   if (!isRequired(tel)) {
     showError(telEl, "Телефон не может быть пустым.");
   } else if (tel.length < 11) {
-    showError(telEl, "Введите телефон полностью.");
+    
+    showError(telEl, (tel.length < 10) ? `Введите ещё ${11-tel.length} цифр` : `Введите ещё ${11-tel.length} цифру`);
   } else {
     showSuccess(telEl);
     valid = true;
