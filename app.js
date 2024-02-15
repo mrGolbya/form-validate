@@ -11,7 +11,7 @@ const checkUsername = (e) => {
   const min = 3,
     max = 25;
 
-  formField = e.target.closest(".form-field");
+  formField = e.target.closest("[data-user-form]");
   let usernameEl = formField.querySelector("[data-user-name]");
   let username = usernameEl.value.trim();
 
@@ -46,7 +46,7 @@ const checkUsername = (e) => {
 const checkEmail = (e) => {
   let valid = false;
 
-  formField = e.target.closest(".form-field");
+  formField = e.target.closest("[data-user-form]");
   let emailEl = formField.querySelector("[data-user-email]");
 
   let email = emailEl.value.trim();
@@ -62,26 +62,12 @@ const checkEmail = (e) => {
   return valid;
 };
 
-const checkNumber = (e) => {
-  let valid = false;
 
-  formField = e.target.closest(".form-field");
-  let numberEl = formField.querySelector("[data-user-number]");
-
-  let number = numberEl.value.trim();
-  if (!isRequired(number)) {
-    showError(numberEl, "Значение не может быть пустым.");
-  } else {
-    showSuccess(numberEl);
-    valid = true;
-  }
-  return valid;
-};
 
 const checkBox = (e) => {
   let valid = false;
 
-  formField = e.target.closest(".form-field");
+  formField = e.target.closest("[data-user-form]");
   let checkBoxEl = formField.querySelector("[data-user-checkbox]");
   const checkbox = checkBoxEl.checked;
   if (!checkbox) {
@@ -96,7 +82,7 @@ const checkBox = (e) => {
 const checkTel = (e) => {
   let valid = false;
 
-  formField = e.target.closest(".form-field");
+  formField = e.target.closest("[data-user-form]");
   let telEl = formField.querySelector("[data-phone-pattern]");
 
   let tel = telEl.value.trim().replace(/\D/g, "");
@@ -180,13 +166,13 @@ const showSuccess = (input) => {
 window.addEventListener("submit", function (e) {
   // prevent the form from submitting
   e.preventDefault();
-  console.log(a)
+
   // validate forms
-  let isUsernameValid = checkUsername(),
-    isEmailValid = checkEmail(),
-    isTelValid = checkTel(),
-    isNumberValid = checkNumber(),
-    isCheckBoxValid = checkBox();
+  let isUsernameValid = checkUsername(e),
+    isEmailValid = checkEmail(e),
+    isTelValid = checkTel(e),
+    isNumberValid = checkNumber(e),
+    isCheckBoxValid = checkBox(e);
 
   let isFormValid =
     isUsernameValid &&
