@@ -1,14 +1,32 @@
+const debounce = (fn, delay = 500) => {
+  let timeoutId;
+  return (...args) => {
+    // cancel the previous timer
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    // setup a new timer
+    timeoutId = setTimeout(() => {
+      fn.apply(null, args);
+    }, delay);
+  };
+};
+//
+
 window.addEventListener("input", debounce(function (e) {
-  if (e.target.id== "usertel") {
-      checkTel();
+  if (e.target.id == "usertel") {
+    checkTel(e)
   }
 })
 );
 
 // let telWrapper = e.target.closest(".form-field");
-let telEl = document.querySelector("[data-phone-pattern]");
 
-const checkTel = () => {
+
+const checkTel = (e) => {
+  let formTel = e.target.closest(".form-field");
+  let telEl = formTel.querySelector("[data-phone-pattern]");
+  console.log(telEl)
   let valid = false;
   const tel = telEl.value.trim().replace(/\D/g, "");
 
@@ -93,18 +111,3 @@ async function formSendServer() {
     alert("ошибка");
   }
 }
-const debounce = (fn, delay = 500) => {
-  let timeoutId;
-  return (...args) => {
-    // cancel the previous timer
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    // setup a new timer
-    timeoutId = setTimeout(() => {
-      fn.apply(null, args);
-    }, delay);
-  };
-};
-//
-
