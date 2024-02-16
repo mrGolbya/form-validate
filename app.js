@@ -205,23 +205,25 @@ const debounce = (fn, delay = 0) => {
   };
 };
 //
-window.addEventListener(
-  "input",
-  debounce(function (e) {
-    if (e.target.id == "username") {
-      checkUsername(e);
-    }
-    if (e.target.id == "email") {
-      checkEmail(e);
-    }
-    if (e.target.id == "usertel") {
-      checkTel(e);
-    }
-    if (e.target.id == "number") {
-      checkNumber(e);
-    }
-    if (e.target.id == "checkbox") {
-      checkBox(e);
-    }
-  })
-);
+for (let ev of ["input", "click"]) {
+  window.addEventListener(
+    ev,
+    debounce(function (e) {
+      if (e.target.id == "username") {
+        checkUsername(e);
+      }
+      if (e.target.id == "email") {
+        checkEmail(e);
+      }
+      if (e.target.id == "usertel") {
+        checkTel(e);
+      }
+      if (e.target.id == "number") {
+        checkNumber(e);
+      }
+      if (e.target.id == "checkbox") {
+        checkBox(e);
+      }
+    })
+  );
+}
