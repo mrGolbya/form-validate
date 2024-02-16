@@ -1,55 +1,44 @@
-// const emailEl = document.querySelector("#email");
-// const telEl = document.querySelector("#usertel");
-// const numberEl = document.querySelector("#number");
-// const checkBoxEl = document.querySelector("#checkbox");
-
-let formField;
-
 const checkUsername = (e) => {
-  let valid = false;
+  const MIN = 3,
+    MAX = 25;
+  let valid = false,
+    formField = e.target.closest("[data-user-form]"),
+    userNameEl = formField.querySelector("[data-user-name]"),
+    userName = userNameEl.value.trim();
 
-  const min = 3,
-    max = 25;
-
-  formField = e.target.closest("[data-user-form]");
-  let usernameEl = formField.querySelector("[data-user-name]");
-  let username = usernameEl.value.trim();
-
-  usernameEl.addEventListener("keydown", getOnlyLetters);
-
-  function getOnlyLetters(e) {
-    if (e.key.match(/[0-9]/)) {
-       e.preventDefault();
-
-    }
-
-  }
-
-  // usernameEl.addEventListener("input", () => {
-  //   usernameEl.value = usernameEl.value.replace(/[0-9]/g, "");
-  // });
-
-  if (!isRequired(username)) {
-    showError(usernameEl, "Имя не может быть пустым.");
-  } else if (!isBetween(username.length, min, max)) {
+  if (!isRequired(userName)) {
+    showError(userNameEl, "Имя не может быть пустым.");
+  } else if (!isBetween(userName.length, MIN, MAX)) {
     showError(
-      usernameEl,
-      `Имя пользователя должно содержать от ${min} до ${max} символов.`
+      userNameEl,
+      `Имя пользователя должно содержать от ${MIN} до ${MAX} символов.`
     );
   } else {
-    showSuccess(usernameEl);
+    showSuccess(userNameEl);
     valid = true;
   }
   return valid;
 };
 
+//enter letters only
+document.querySelectorAll("[data-user-name]").forEach((e) => {
+  for (let ev of ["keydown", "paste"]) {
+    ev == "keydown"
+      ? e.addEventListener(ev, getOnlyLetters)
+      : e.addEventListener(ev, (e) => e.preventDefault());
+  }
+  function getOnlyLetters(e) {
+    if (e.key.match(/[0-9\W_]/g)) {
+      e.preventDefault();
+    }
+  }
+});
+
 const checkEmail = (e) => {
-  let valid = false;
-
-  formField = e.target.closest("[data-user-form]");
-  let emailEl = formField.querySelector("[data-user-email]");
-
-  let email = emailEl.value.trim();
+  let valid = false,
+    formField = e.target.closest("[data-user-form]"),
+    emailEl = formField.querySelector("[data-user-email]"),
+    email = emailEl.value.trim();
 
   if (!isRequired(email)) {
     showError(emailEl, "Email не может быть пустым.");
@@ -62,15 +51,12 @@ const checkEmail = (e) => {
   return valid;
 };
 
-
-
 const checkBox = (e) => {
-  let valid = false;
-
-  formField = e.target.closest("[data-user-form]");
-  let checkBoxEl = formField.querySelector("[data-user-checkbox]");
-  const checkbox = checkBoxEl.checked;
-  if (!checkbox) {
+  let valid = false,
+    formField = e.target.closest("[data-user-form]"),
+    checkBoxEl = formField.querySelector("[data-user-checkbox]");
+  const CHECKBOX = checkBoxEl.checked;
+  if (!CHECKBOX) {
     showError(checkBoxEl, "Чтобы продолжить, дайте согласие.");
   } else {
     showSuccess(checkBoxEl);
@@ -80,17 +66,20 @@ const checkBox = (e) => {
 };
 //
 const checkTel = (e) => {
-  let valid = false;
-
-  formField = e.target.closest("[data-user-form]");
-  let telEl = formField.querySelector("[data-phone-pattern]");
-
-  let tel = telEl.value.trim().replace(/\D/g, "");
+  let valid = false,
+    formField = e.target.closest("[data-user-form]"),
+    telEl = formField.querySelector("[data-phone-pattern]"),
+    tel = telEl.value.trim().replace(/\D/g, "");
 
   if (!isRequired(tel)) {
     showError(telEl, "Телефон не может быть пустым.");
   } else if (tel.length < 11) {
-    showError(telEl,   `Введите ещё ${11-tel.length} ${(7>tel.length > 0 ? 'цифр' : tel.length < 10  ? 'цифры' : 'цифру')}`);
+    showError(
+      telEl,
+      `Введите ещё ${11 - tel.length} ${
+        7 > tel.length > 0 ? "цифр" : tel.length < 10 ? "цифры" : "цифру"
+      }`
+    );
   } else {
     showSuccess(telEl);
     valid = true;
@@ -99,7 +88,7 @@ const checkTel = (e) => {
 };
 
 //mask phone
-let eventCalllback = function (e) {
+let maskPhone = function (e) {
   let el = e.target,
     pattern = el.dataset.phonePattern,
     matrix_def = "+7(___) ___-__-__",
@@ -119,19 +108,14 @@ let eventCalllback = function (e) {
 var phone_inputs = document.querySelectorAll("[data-phone-pattern]");
 for (let elem of phone_inputs) {
   for (let ev of ["input", "blur", "focus"]) {
-    elem.addEventListener(ev, eventCalllback);
+    elem.addEventListener(ev, maskPhone);
   }
 }
 //
-
 const isEmailValid = (email) => {
-  const re =
+  const RE =
     /^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
-};
-
-const isTelValid = (tel) => {
-  return /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g.test(tel);
+  return RE.test(email);
 };
 
 const isRequired = (value) => (value === "" ? false : true);
@@ -227,18 +211,17 @@ window.addEventListener(
     if (e.target.id == "username") {
       checkUsername(e);
     }
-      if (e.target.id == "email") {
-        checkEmail(e);
-      }
-      if (e.target.id == "usertel") {
-        checkTel(e);
-      }
-      if (e.target.id == "number") {
-        checkNumber(e);
-      }
-      if (e.target.id == "checkbox") {
-        checkBox(e);
-      }
-    
+    if (e.target.id == "email") {
+      checkEmail(e);
+    }
+    if (e.target.id == "usertel") {
+      checkTel(e);
+    }
+    if (e.target.id == "number") {
+      checkNumber(e);
+    }
+    if (e.target.id == "checkbox") {
+      checkBox(e);
+    }
   })
 );
