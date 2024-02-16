@@ -227,3 +227,30 @@ for (let ev of ["input", "click"]) {
     })
   );
 }
+let today = new Date(),
+ dd = today.getDate(),
+ mm = today.getMonth() + 1, // Месяца идут с 0, так что добавляем 1.
+ yyyy = today.getFullYear(),
+ minutes = today.getMinutes(),
+ hour = today.getHours();
+if(dd < 10){
+  dd='0' + dd
+} 
+if(mm < 10){
+  mm='0' + mm
+} 
+
+
+if(hour < 10){
+  hour='0' + hour
+}
+if(minutes < 10){
+  minutes='0' + minutes
+}
+today = yyyy + '-' + mm + '-' + dd;
+document.getElementById("date").setAttribute("min", today);
+document.getElementById("date").value = today
+
+today =  hour + ':' + minutes;
+document.getElementById("time").setAttribute("min", today);
+document.getElementById("time").value = today
