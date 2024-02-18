@@ -22,14 +22,23 @@ const checkUsername = (e) => {
 
 //enter letters only
 document.querySelectorAll("[data-user-name]").forEach((e) => {
-  for (let ev of ["keydown","input", "paste"]) {
-    ev == "keydown" || ev == "input"
-      ? e.addEventListener(ev, getOnlyLetters)
+  for (let ev of ["keydown", "input", "paste"]) {
+    ev == "keydown"
+      ? e.addEventListener(ev, getOnlyLettersKey)
+      : ev == "input"
+      ? e.addEventListener(ev, getOnlyLettersData)
       : e.addEventListener(ev, (e) => e.preventDefault());
   }
-  function getOnlyLetters(e) {
+  function getOnlyLettersKey(e) {
     if (e.key.match(/[^a-zA-ZА-Яа-яЁё]/g)) {
       e.preventDefault();
+    }
+  }
+  function getOnlyLettersData(e) {
+    if(e.data!==null){
+      if (e.data.match(/[^a-zA-ZА-Яа-яЁё]/g) ) {
+        e.preventDefault();
+      }
     }
   }
 });
