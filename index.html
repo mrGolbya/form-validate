@@ -51,10 +51,10 @@
               <small></small>
             </div>
             <div class="form-field">
-              <label for="date" >Дата</label>
-            <input type="date" id="date" >
+            <label for="date">Дата</label>
+            <input type="date" id="date" data-user-data>
             <label for="time">Время</label>
-            <input type="time" id="time">
+            <input type="time" id="time" data-user-time>
           </div>
             <div class="form-field">
               <input
@@ -73,77 +73,79 @@
            
           </div>
           <input type="submit" value="отправить" class="btn" />
-        </div>
-      </form>
-    </div>
-    
-    <div class="container">
-      <form id="form" data-user-form novalidate class="form">
-        <!-- <div class="wrapper"> -->
-
-            <h1>Личная информация</h1>
-            <div class="form-field">
-              <label for="username">Имя*:</label>
-              <input
-                type="text"
-                name="username"
-                id="username"
-                data-user-name
-                autocomplete="off"
-                placeholder="Введите Ваше имя"
-              />
-              <small></small>
-            </div>
-
-            <div class="form-field">
-              <label for="email">Email:</label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                data-user-email
-                autocomplete="off"
-                placeholder="Введите Ваш email"
-              />
-              <small></small>
-            </div>
-            <div class="form-field">
-              <label for="usertel">Телефон*:</label>
-              <input
-                type="tel"
-                name="usertel"
-                id="usertel"
-                class="usertel"
-                data-phone-pattern
-                autocomplete="off"
-                placeholder="Введите Ваш номер"
-              />
-              <small></small>
-            </div>
-         
-
-            <div class="form-field">
-              <input
-                type="checkbox"
-                name="checkbox"
-                id="checkbox"
-                data-user-checkbox
-                class="checkbox-input"
-                checked
-              />
-              <label for="checkbox" class="checkbox-label"
-                >Я принимаю правила сервиса</label
-              >
-              <small></small>
-         
-           
-          </div>
-          <input type="submit" value="отправить" class="btn" />
-        </div>
-      </form>
-
+        </form>
+      </div>
       
-    </div>
+      <div class="container">
+        <form id="form" data-user-form novalidate class="form">
+          <!-- <div class="wrapper"> -->
+  
+              <h1>Личная информация</h1>
+              <div class="form-field">
+                <label for="username">Имя*:</label>
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  data-user-name
+                  autocomplete="off"
+                  placeholder="Введите Ваше имя"
+                />
+                <small></small>
+              </div>
+  
+              <div class="form-field">
+                <label for="email">Email:</label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  data-user-email
+                  autocomplete="off"
+                  placeholder="Введите Ваш email"
+                />
+                <small></small>
+              </div>
+              <div class="form-field">
+                <label for="usertel">Телефон*:</label>
+                <input
+                  type="tel"
+                  name="usertel"
+                  id="usertel"
+                  class="usertel"
+                  data-phone-pattern
+                  autocomplete="off"
+                  placeholder="Введите Ваш номер"
+                />
+                <small></small>
+              </div>
+              <div class="form-field">
+              <label for="date">Дата</label>
+              <input type="date" id="date" data-user-data>
+              <label for="time">Время</label>
+              <input type="time" id="time" data-user-time>
+            </div>
+              <div class="form-field">
+                <input
+                  type="checkbox"
+                  name="checkbox"
+                  id="checkbox"
+                  data-user-checkbox
+                  class="checkbox-input"
+                  checked
+                />
+                <label for="checkbox" class="checkbox-label"
+                  >Я принимаю правила сервиса</label
+                >
+                <small></small>
+           
+             
+            </div>
+            <input type="submit" value="отправить" class="btn" />
+          </form>
+        </div>
+    
+     
     <script src="app.js"></script>
   </body>
 </html>

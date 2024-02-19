@@ -227,12 +227,16 @@ for (let ev of ["input", "click"]) {
     })
   );
 }
+
+const USER_DATA = document.querySelectorAll("[data-user-data]")
+let USER_TIME = document.querySelectorAll("[data-user-time]")
+
 let today = new Date(),
  dd = today.getDate(),
  mm = today.getMonth() + 1, // Месяца идут с 0, так что добавляем 1.
  yyyy = today.getFullYear(),
- minutes = today.getMinutes(),
- hour = today.getHours();
+ h = today.getHours(),
+ s = today.getMinutes();
 if(dd < 10){
   dd='0' + dd
 } 
@@ -240,17 +244,16 @@ if(mm < 10){
   mm='0' + mm
 } 
 
-
-if(hour < 10){
-  hour='0' + hour
-}
-if(minutes < 10){
-  minutes='0' + minutes
-}
 today = yyyy + '-' + mm + '-' + dd;
-document.getElementById("date").setAttribute("min", today);
-document.getElementById("date").value = today
+USER_DATA.forEach(e=>{
+  e.setAttribute("min", today);
+  e.value = today
+})
 
-today =  hour + ':' + minutes;
-document.getElementById("time").setAttribute("min", today);
-document.getElementById("time").value = today
+
+const GET_TIME = setInterval(function() {
+  let time = new Date();
+  USER_TIME.forEach(e=>{
+    e.value = (time.getHours() + ":" + time.getMinutes());
+  })
+}, 1000);
