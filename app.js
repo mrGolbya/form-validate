@@ -37,7 +37,7 @@ const checkEmail = (e) => {
     formField = e.target.closest("[data-user-form]"),
     emailEl = formField.querySelector("[data-user-email]"),
     email = emailEl.value.trim();
-
+   
   if (!isRequired(email)) {
     showError(emailEl, "Email не может быть пустым.");
   } else if (!isEmailValid(email)) {
@@ -153,14 +153,12 @@ window.addEventListener("submit", function (e) {
   let isUsernameValid = checkUsername(e),
     isEmailValid = checkEmail(e),
     isTelValid = checkTel(e),
-    isNumberValid = checkNumber(e),
     isCheckBoxValid = checkBox(e);
 
   let isFormValid =
     isUsernameValid &&
     isEmailValid &&
     isTelValid &&
-    isNumberValid &&
     isCheckBoxValid;
 
   // submit to the server if the form is valid
@@ -203,25 +201,25 @@ const debounce = (fn, delay = 0) => {
   };
 };
 //
-for (let ev of ["input", "click"]) {
+// for (let ev of ["input", "click"]) {
   window.addEventListener(
-    ev,
+    "input",
     debounce(function (e) {
-      if (e.target.id == "username") {
+      if (e.target.name == "username") {
         checkUsername(e);
       }
-      if (e.target.id == "email") {
+      if (e.target.name == "email") {
         checkEmail(e);
       }
-      if (e.target.id == "usertel") {
+      if (e.target.name == "usertel") {
         checkTel(e);
       }
-      if (e.target.id == "number") {
+      if (e.target.name == "number") {
         checkNumber(e);
       }
-      if (e.target.id == "checkbox") {
+      if (e.target.name == 'checkbox') {
         checkBox(e);
       }
     })
   );
-}
+// }
