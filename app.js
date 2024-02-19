@@ -223,3 +223,32 @@ const debounce = (fn, delay = 0) => {
     })
   );
 // }
+const USER_DATA = document.querySelectorAll("[data-user-data]")
+const USER_TIME = document.querySelectorAll("[data-user-time]")
+
+let today = new Date(),
+ dd = today.getDate(),
+ mm = today.getMonth() + 1, // Месяца идут с 0, так что добавляем 1.
+ yyyy = today.getFullYear(),
+ h = today.getHours(),
+ s = today.getMinutes();
+if(dd < 10){
+  dd='0' + dd
+} 
+if(mm < 10){
+  mm='0' + mm
+} 
+
+today = yyyy + '-' + mm + '-' + dd;
+USER_DATA.forEach(e=>{
+  e.setAttribute("min", today);
+  e.value = today
+})
+
+
+const GET_TIME = setInterval(function() {
+  let time = new Date();
+  USER_TIME.forEach(e=>{
+    e.value = (time.getHours() + ":" + time.getMinutes());
+  })
+}, 1000);
