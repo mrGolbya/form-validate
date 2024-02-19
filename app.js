@@ -21,27 +21,16 @@ const checkUsername = (e) => {
 };
 
 //enter letters only
+function getOnlyLetters(e){
+ e.target.value = e.target.value.replace(/[^a-zA-ZА-Яа-яЁё]/g,'')
+}
 document.querySelectorAll("[data-user-name]").forEach((e) => {
-  for (let ev of ["keydown", "input", "paste"]) {
-    ev == "keydown"
-      ? e.addEventListener(ev, getOnlyLettersKey)
-      : ev == "input"
-      ? e.addEventListener(ev, getOnlyLettersData)
-      : e.addEventListener(ev, (e) => e.preventDefault());
+  for (let ev of ["keydown", "input", "blur", "focus", "paste"]) {
+    ev === "paste"
+    ?e.addEventListener(ev, (e) => e.preventDefault())
+    :e.addEventListener(ev, getOnlyLetters)
   }
-  function getOnlyLettersKey(e) {
-    if (e.key.match(/[^a-zA-ZА-Яа-яЁё]/g)) {
-      e.preventDefault();
-    }
-  }
-  function getOnlyLettersData(e) {
-    if(e.data!==null){
-      if (e.data.match(/[^a-zA-ZА-Яа-яЁё]/g) ) {
-        e.preventDefault();
-      }
-    }
-  }
-});
+})
 
 const checkEmail = (e) => {
   let valid = false,
@@ -114,7 +103,7 @@ let maskPhone = function (e) {
       : a;
   });
 };
-var phone_inputs = document.querySelectorAll("[data-phone-pattern]");
+let phone_inputs = document.querySelectorAll("[data-phone-pattern]");
 for (let elem of phone_inputs) {
   for (let ev of ["input", "blur", "focus"]) {
     elem.addEventListener(ev, maskPhone);
