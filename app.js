@@ -224,13 +224,14 @@ const debounce = (fn, delay = 0) => {
   );
 // }
 const USER_DATA = document.querySelectorAll("[data-user-data]")
-let USER_TIME = document.querySelectorAll("[data-user-time]")
+const USER_TIME = document.querySelectorAll("[data-user-time]")
 
 let today = new Date(),
  dd = today.getDate(),
  mm = today.getMonth() + 1, // Месяца идут с 0, так что добавляем 1.
- yyyy = today.getFullYear()
-
+ yyyy = today.getFullYear(),
+ h = today.getHours(),
+ s = today.getMinutes();
 if(dd < 10){
   dd='0' + dd
 } 
@@ -245,17 +246,9 @@ USER_DATA.forEach(e=>{
 })
 
 
-let GET_TIME = setInterval(function() {
-  let time = new Date(),
-  h = time.getHours(),
-  m = time.getMinutes();
-  if(h < 10){
-    h='0' + h
-  } 
-  if(m < 10){
-    m='0' + m
-  } 
+const GET_TIME = setInterval(function() {
+  let time = new Date();
   USER_TIME.forEach(e=>{
-    e.value = h+ ':' +m
+    e.value = (time.getHours() + ":" + time.getMinutes());
   })
 }, 1000);
